@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ doctor.firstName }} {{ doctor.lastName }}{% endblock %}
+
+{% block body %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <a href="{{ path('app_hospital_show', {id: doctor.hospital.id}) }}" style="color: #3498db; text-decoration: none;">← Powrót do {{ doctor.hospital.name }}</a>
+    
+    <h1 style="color: #2c3e50; margin: 30px 0 20px;">👨‍⚕️ {{ doctor.firstName }} {{ doctor.lastName }}</h1>
+    
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+        <p style="margin: 5px 0;">🩺 <strong>Specjalizacja:</strong> {{ doctor.specialization }}</p>
+        <p style="margin: 5px 0;">🏥 <strong>Szpital:</strong> {{ doctor.hospital.name }}</p>
+        {% if averageRating %}
+            <p style="margin: 5px 0;">⭐ <strong>Średnia ocena:</strong> {{ averageRating }} / 5 ({{ reviews|length }} {{ reviews|length == 1 ? 'recenzja' : 'recenzji' }})</p>
+        {% endif %}
+    </div>
+
+    <h2 style="color: #2c3e50; margin: 30px 0 20px;">📝 Dodaj recenzję</h2>
+    
+    {% for message in app.flashes('success') %}
+        <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 40px;">
+        {{ form_start(form) }}
+            <div style="margin-bottom: 20px;">
+                {{ form_label(form.rating) }}
+                {{ form_widget(form.rating, {'attr': {'style': 'width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;'}}) }}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                {{ form_label(form.comment) }}
+                {{ form_widget(form.comment, {'attr': {'style': 'width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;'}}) }}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                {{ form_label(form.authorName) }}
+                {{ form_widget(form.authorName, {'attr': {'style': 'width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;'}}) }}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                {{ form_label(form.authorEmail) }}
+                {{ form_widget(form.authorEmail, {'attr': {'style': 'width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;'}}) }}
+            </div>
+
+            <button type="submit" style="background: #3498db; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                Dodaj recenzję
+            </button>
+        {{ form_end(form) }}
+    </div>
+
+    <h2 style="color: #2c3e50; margin: 30px 0 20px;">💬 Recenzje ({{ reviews|length }})</h2>
+    
+    {% for review in reviews %}
+        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <strong style="color: #2c3e50;">{{ review.authorName }}</strong>
+                <span style="color: #f39c12; font-size: 18px;">
+                    {% for i in 1..review.rating %}⭐{% endfor %}
+                </span>
+            </div>
+            <p style="color: #555; line-height: 1.6; margin: 10px 0;">{{ review.comment }}</p>
+            <small style="color: #999;">{{ review.createdAt|date('d.m.Y H:i') }}</small>
+        </div>
+    {% else %}
+        <p style="color: #999;">Brak recenzji dla tego lekarza. Bądź pierwszy!</p>
+    {% endfor %}
+</div>
+{% endblock %}

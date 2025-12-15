@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recenzje Lekarzy - Strona Główna{% endblock %}
+
+{% block body %}
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #2c3e50; margin-bottom: 30px;">🏥 Szpitale</h1>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            {% for hospital in hospitals %}
+                <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <h3 style="color: #3498db; margin-top: 0;">{{ hospital.name }}</h3>
+                    <p style="color: #7f8c8d; margin: 10px 0;">
+                        📍 {{ hospital.address }}<br>
+                        🏙️ {{ hospital.city }}<br>
+                        {% if hospital.phone %}
+                            📞 {{ hospital.phone }}
+                        {% endif %}
+                    </p>
+                    <a href="{{ path('app_hospital_show', {id: hospital.id}) }}"
+                       style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px;">
+                        Zobacz lekarzy →
+                    </a>
+                </div>
+            {% else %}
+                <p>Brak szpitali w bazie danych.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

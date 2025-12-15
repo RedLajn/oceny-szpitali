@@ -1,0 +1,24 @@
+services:
+  php:
+    image: php:8.3-cli
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - database
+    command: tail -f /dev/null
+
+  database:
+    image: mariadb:11
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hospital_reviews
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    ports:
+      - "3307:3306"
+    volumes:
+      - database_data:/var/lib/mysql
+
+volumes:
+  database_data:

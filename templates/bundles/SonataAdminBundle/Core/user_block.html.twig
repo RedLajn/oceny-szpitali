@@ -1,0 +1,9 @@
+{% if app.user %}
+    <div style="padding: 10px; color: white;">
+        Zalogowany jako: <strong>{{ app.user.email }}</strong>
+        <br>
+        <a href="{{ path('app_logout') }}" style="color: #ffd700; text-decoration: none;">
+            🚪 Wyloguj się
+        </a>
+    </div>
+{% endif %}

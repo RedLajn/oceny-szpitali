@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ hospital.name }}{% endblock %}
+
+{% block body %}
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <a href="{{ path('app_home') }}" style="color: #3498db; text-decoration: none;">← Powrót do listy szpitali</a>
+
+        <h1 style="color: #2c3e50; margin: 30px 0 20px;">{{ hospital.name }}</h1>
+
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <p style="margin: 5px 0;">📍 <strong>Adres:</strong> {{ hospital.address }}</p>
+            <p style="margin: 5px 0;">🏙️ <strong>Miasto:</strong> {{ hospital.city }}</p>
+            {% if hospital.phone %}
+                <p style="margin: 5px 0;">📞 <strong>Telefon:</strong> {{ hospital.phone }}</p>
+            {% endif %}
+        </div>
+
+        <h2 style="color: #2c3e50; margin: 30px 0 20px;">👨‍⚕️ Lekarze</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            {% for doctor in doctors %}
+                <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <h3 style="color: #3498db; margin-top: 0;">{{ doctor.firstName }} {{ doctor.lastName }}</h3>
+                    <p style="color: #7f8c8d; margin: 10px 0;">
+                        🩺 {{ doctor.specialization }}
+                    </p>
+                    <a href="{{ path('app_doctor_show', {id: doctor.id}) }}"
+                       style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px;">
+                        Zobacz profil i recenzje →
+                    </a>
+                </div>
+            {% else %}
+                <p>Brak lekarzy w tym szpitalu.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
